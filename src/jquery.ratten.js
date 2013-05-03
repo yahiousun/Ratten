@@ -1,5 +1,5 @@
 /*!
- *	jQuery Ratten v0.1 - 2013-05-01
+ *	jQuery Ratten v0.2 - 2013-05-03
  *	(c) 2013 yahiousun
  *	Released under the MIT license
  *	MIT-LICENSE.txt
@@ -8,20 +8,20 @@
 (function($) {
 	// Default settings
 	var defaults = {
-		container: 'ul',
-		element: 'li',
-		prev: '.ratten-prev',
-		next: '.ratten-next',
-		tween: 500,
-		interval: 3500,
-		step: 1,
-		spacing: 70,
-		autoplay: true,
-		pause: true,
+		container: 'ul', // container
+		element: 'li', // animate element
+		prev: '.ratten-prev', // perv control selector
+		next: '.ratten-next', // next control selector
+		tween: 500, // animate time
+		interval: 3500, // run interval
+		step: 1, // run step
+		spacing: 70, // element's spacing
+		autoplay: true, // autoplay
+		pause: true, // onHover pause
 		//responsive: true,
 		//orientation: 'horizontal',
 		//style: 'ratten',
-		delay: 3500
+		delay: 3500 // init delay
 	};
 	// Debug
 	function debug(msg){
@@ -49,24 +49,14 @@
 			// Methods
 			var methods = {
 				init: function(){
-					// Events
-					elements.on('click', methods.goto);
-					prev.on('click', methods.prev);
-					next.on('click', methods.next);
-					if(opts.pause===true){
-						self.on({
-							'mouseenter': methods.pause,
-							'mouseleave': methods.start
-						});
-					}
-					methods.position();
-					methods.monitor('init');
 					// Autoplay
 					if(opts.autoplay===true){
-						methods.monitor('run');
-						timer = setTimeout(function(){
-							methods.move(opts.step);
-						}, opts.delay);
+						methods.monitor('init', function(){
+							methods.position();
+							methods.timer();
+						});
+					}else{
+						methods.monitor('init', methods.position);
 					}
 				},
 				position: function(){
@@ -104,7 +94,6 @@
 								methods.timer();
 							};
 						});
-						debug('timer('+timer+')');
 					}else if(step<0){ // move back
 						container.stop().animate({
 							'left': opts.spacing*step
@@ -153,6 +142,13 @@
 								methods.move(opts.step);
 							}, opts.interval);
 						})
+						debug('timer('+timer+')');
+					}else if(status==='init'){
+						methods.monitor('run', function(){
+							timer = setTimeout(function(){
+								methods.move(opts.step);
+							}, opts.delay);
+						})
 					}
 				},
 				clear: function(callback){
@@ -166,10 +162,7 @@
 					methods.monitor('pause', methods.clear);
 				},
 				start: function(){
-					methods.clear(function(){
-						methods.monitor('run', methods.timer);
-						debug('start');
-					})
+					methods.monitor('run', methods.timer);
 				},
 				monitor: function(value, callback){
 					// Log status
@@ -183,6 +176,16 @@
 			}
 			// init
 			methods.init();
+			// Events
+			elements.on('click', methods.goto); // go to target on click
+			prev.on('click', methods.prev);
+			next.on('click', methods.next);	
+			if(opts.pause===true){
+				self.on({
+					'mouseenter': methods.pause, // pause on hover
+					'mouseleave': methods.start // start on mouse leave
+				});
+			}
 		});
 	};
 })(jQuery);

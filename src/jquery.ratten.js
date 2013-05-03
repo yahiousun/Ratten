@@ -100,7 +100,7 @@
 									'opacity': 1
 								});
 							});
-							if(opts.autoplay===true&&status==='run'){
+							if(opts.autoplay===true){
 								methods.timer();
 							};
 						});
@@ -121,47 +121,64 @@
 						container.stop().animate({
 							'left': 0
 						}, opts.tween, function(){
-							if(opts.autoplay===true&&status==='run'){
+							if(opts.autoplay===true){
 								methods.timer();
 							};
 						});
 					}
 				},
 				prev: function(){
-					methods.move(-1);
+					methods.monitor('prev', function(){
+						methods.move(-opts.step);
+					})
 					return false;
 				},
 				next: function(){
-					methods.move(1);
+					methods.monitor('next', function(){
+						methods.move(opts.step);
+					})
 					return false;
 				},
 				goto: function(){
 					var step = $(this).index();
-					methods.monitor('goto');
-					methods.move(step);
+					methods.monitor('goto', function(){
+						methods.move(step);
+					});
 					return false;
 				},
 				timer: function(){
-					timer = setTimeout(function(){
-						methods.move(opts.step);
-					}, opts.interval);
+					if(status==='run'){
+						methods.clear(function(){
+							timer = setTimeout(function(){
+								methods.move(opts.step);
+							}, opts.interval);
+						})
+					}
 				},
-				clear: function(){
+				clear: function(callback){
 					clearTimeout(timer);
+					if(callback){
+						callback();
+					}
 					debug('clear');
 				},
 				pause: function(){
-					methods.monitor('pause');
-					methods.clear();
+					methods.monitor('pause', methods.clear);
 				},
 				start: function(){
-					methods.monitor('run');
-					methods.timer();
+					methods.clear(function(){
+						methods.monitor('run', methods.timer);
+						debug('start');
+					})
 				},
-				monitor: function(info){
+				monitor: function(value, callback){
 					// Log status
-					self.data('status', info);
+					self.data('status', value);
 					status = self.data('status');
+					debug('status '+status)
+					if(callback){
+						callback();
+					}
 				}
 			}
 			// init

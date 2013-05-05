@@ -1,22 +1,15 @@
 @charset "utf-8";
 /* CSS Document */
 
-#ratten {
-	width: 728px;
-	height: 70px;
-	margin: 20px auto;
-	box-shadow: rgba(0,0,0,.3) 0 1px 4px;
-}
 .ratten {
 	position: relative;
 	overflow: hidden;
+	box-shadow: rgba(0,0,0,.3) 0 1px 4px;
 }
 .ratten ul {
 	position: absolute;
 }
 .ratten li {
-	width: 448px;
-	height: 70px;
 	position: absolute;
 	background: #F8F8F8;
 	box-shadow: rgba(0,0,0,.3) 1px 0 3px;
@@ -35,6 +28,26 @@
 	z-index: 10000;
 	right: 0;
 	bottom: 0;
+}
+
+#demo-horizontal {
+	width: 728px;
+	height: 70px;
+	margin: 20px auto;
+}
+
+#demo-horizontal li {
+	width: 448px;
+	height: 70px;
+}
+#demo-vertical {
+	width: 728px;
+	height: 300px;
+	margin: 20px auto;
+}
+#demo-vertical li {
+	width: 728px;
+	height: 100px;
 }
 
 @media only screen and (max-width: 767px) {

@@ -1,5 +1,5 @@
 /*!
- *	jQuery Ratten v0.2 - 2013-05-03
+ *	jQuery Ratten v0.3 - 2013-05-05
  *	(c) 2013 yahiousun
  *	Released under the MIT license
  *	MIT-LICENSE.txt
@@ -17,9 +17,9 @@
 		step: 1, // run step
 		spacing: 70, // element's spacing
 		autoplay: true, // autoplay
-		pause: true, // onHover pause
+		pause: true, // on hover pause
 		//responsive: true,
-		//orientation: 'horizontal',
+		orientation: 'horizontal',
 		//style: 'ratten',
 		delay: 3500 // init delay
 	};
@@ -31,20 +31,20 @@
 	};
 	$.fn.ratten = function(options){
 		var opts;
-		if(options&&typeof(options)===object){
+		if(options&&typeof(options)==='object'){
 			opts = $.extend(defaults, options);
-			}
-			else{
-				opts = defaults;
-				};
+		}else{
+			opts = defaults;
+		};
 		return this.each(function(){
 			var self = $(this);
 			var container = self.find(opts.container);
 			var elements = container.find(opts.element);
 			var next = self.find(opts.next);
 			var prev = self.find(opts.prev);
-			var timer;
+			var timer; // autoplay timer
 			var status; // running status
+			var orientation = opts.orientation;
 			
 			// Methods
 			var methods = {
@@ -60,60 +60,119 @@
 					}
 				},
 				position: function(){
-					elements.each(function(){
-						var index = $(this).index();
-						$(this).css({
-							'z-index': (9999-index),
-							'left': opts.spacing*index
+					if(orientation==='horizontal'){
+						elements.each(function(){
+							var index = $(this).index();
+							$(this).css({
+								'left': opts.spacing*index,
+								'z-index': (9999-index)
+							});
+							elements = container.find(opts.element); // Reset elements
 						});
-						elements = container.find(opts.element); // Reset elements
-					});
+					}else if(orientation==='vertical'){
+						elements.each(function(){
+							var index = $(this).index();
+							$(this).css({
+								'top': opts.spacing*index,
+								'z-index': (9999-index)
+							});
+							elements = container.find(opts.element); // Reset elements
+						});
+					}
 				},
 				move: function(step){
-					if(step>0){ // move forward
-						// move container
-						container.stop().animate({
-							'left': -opts.spacing*step
-						}, opts.tween, function(){
-							for(i=0;i<elements.eq(step).prevAll(opts.element).length;i++){
-								elements.eq(0).appendTo(container);
-								methods.position();
-							};
-							container.css('left',0);
-						});
-						// move prevAll elements
-						elements.eq(step).prevAll(opts.element).stop().animate({
-							'opacity': 0
-						}, opts.tween, function(){
-							elements.each(function(){
-								$(this).css({
-									'opacity': 1
-								});
+					if(orientation==='horizontal'){
+						if(step>0){ // move forward
+							// move container
+							container.stop().animate({
+								'left': -opts.spacing*step
+							}, opts.tween, function(){
+								for(i=0;i<elements.eq(step).prevAll(opts.element).length;i++){
+									elements.eq(0).appendTo(container);
+									methods.position();
+								};
+								container.css({'left': 0});
 							});
-							if(opts.autoplay===true){
-								methods.timer();
-							};
-						});
-					}else if(step<0){ // move back
-						container.stop().animate({
-							'left': opts.spacing*step
-						}, 0, function(){
-							elements.eq(step-1).nextAll(opts.element).css('opacity', 0);
-							for(i=0;i<elements.eq(step-1).nextAll(opts.element).length;i++){
-								elements.eq(-1).prependTo(container);
-								methods.position();
-								elements.eq(0).animate({
-									'opacity': 1
-								}, opts.tween);
-							};
-						});
-						container.stop().animate({
-							'left': 0
-						}, opts.tween, function(){
-							if(opts.autoplay===true){
-								methods.timer();
-							};
-						});
+							// move prevAll elements
+							elements.eq(step).prevAll(opts.element).stop().animate({
+								'opacity': 0
+							}, opts.tween, function(){
+								elements.each(function(){
+									$(this).css({
+										'opacity': 1
+									});
+								});
+								if(opts.autoplay===true){
+									methods.timer();
+								};
+							});
+						}else if(step<0){ // move back
+							container.stop().animate({
+								'left': opts.spacing*step
+							}, 0, function(){
+								elements.eq(step-1).nextAll(opts.element).css('opacity', 0);
+								for(i=0;i<elements.eq(step-1).nextAll(opts.element).length;i++){
+									elements.eq(-1).prependTo(container);
+									methods.position();
+									elements.eq(0).animate({
+										'opacity': 1
+									}, opts.tween);
+								};
+							});
+							container.stop().animate({
+								'left': 0
+							}, opts.tween, function(){
+								if(opts.autoplay===true){
+									methods.timer();
+								};
+							});
+						}
+					}else if(orientation==='vertical'){
+						if(step>0){ // move forward
+							// move container
+							container.stop().animate({
+								'top': -opts.spacing*step
+							}, opts.tween, function(){
+								for(i=0;i<elements.eq(step).prevAll(opts.element).length;i++){
+									elements.eq(0).appendTo(container);
+									methods.position();
+								};
+								container.css({'top': 0});
+							});
+							// move prevAll elements
+							elements.eq(step).prevAll(opts.element).stop().animate({
+								'opacity': 0
+							}, opts.tween, function(){
+								elements.each(function(){
+									$(this).css({
+										'opacity': 1
+									});
+								});
+								if(opts.autoplay===true){
+									methods.timer();
+								};
+							});
+						}else if(step<0){ // move back
+							container.stop().animate({
+								'top': opts.spacing*step
+							}, 0, function(){
+								elements.eq(step-1).nextAll(opts.element).css('opacity', 0);
+								for(i=0;i<elements.eq(step-1).nextAll(opts.element).length;i++){
+									elements.eq(-1).prependTo(container);
+									methods.position();
+									elements.eq(0).animate({
+										'opacity': 1
+									}, opts.tween);
+								};
+							});
+							container.stop().animate({
+								'top': 0
+							}, opts.tween, function(){
+								if(opts.autoplay===true){
+									methods.timer();
+								};
+							});
+						}
 					}
 				},
 				prev: function(){

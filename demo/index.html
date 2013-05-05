@@ -10,13 +10,38 @@
 <script src="../src/jquery.ratten.js"></script>
 <script>
 $(document).ready(function(e) {
-	$('#ratten').ratten();
+	$('#demo-horizontal').ratten();
+	$('#demo-vertical').ratten({
+		orientation: 'vertical',
+		spacing: 50
+	});
 });
 </script>
 </head>
 
 <body>
-<div id="ratten" class="ratten">
+<div id="demo-horizontal" class="ratten">
+<a class="ratten-prev" href="#">prev</a>
+<a class="ratten-next" href="#">next</a>
+	<ul>
+		<li style="background-color: #F00">#1</li>
+		<li style="background-color: #F90">#2</li>
+		<li style="background-color: #FF0">#3</li>
+		<li style="background-color: #6F0">#4</li>
+		<li style="background-color: #6CF">#5</li>
+		<li style="background-color: #00F">#6</li>
+		<li style="background-color: #F0F">#7</li>
+		<li style="background-color: #F00">#8</li>
+		<li style="background-color: #F90">#9</li>
+		<li style="background-color: #FF0">#10</li>
+		<li style="background-color: #6F0">#11</li>
+		<li style="background-color: #6CF">#12</li>
+		<li style="background-color: #00F">#13</li>
+		<li style="background-color: #F0F">#14</li>
+		<li style="background-color: #F00">#15</li>
+		</ul>
+	</div>
+<div id="demo-vertical" class="ratten">
 <a class="ratten-prev" href="#">prev</a>
 <a class="ratten-next" href="#">next</a>
 	<ul>

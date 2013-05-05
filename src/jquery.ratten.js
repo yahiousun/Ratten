@@ -6,23 +6,8 @@
  */
 
 (function($) {
-	// Default settings
-	var defaults = {
-		container: 'ul', // container
-		element: 'li', // animate element
-		prev: '.ratten-prev', // perv control selector
-		next: '.ratten-next', // next control selector
-		tween: 500, // animate time
-		interval: 3500, // run interval
-		step: 1, // run step
-		spacing: 70, // element's spacing
-		autoplay: true, // autoplay
-		pause: true, // on hover pause
-		//responsive: true,
-		orientation: 'horizontal',
-		//style: 'ratten',
-		delay: 3500 // init delay
-	};
+
+
 	// Debug
 	function debug(msg){
 		if (window.console&&window.console.log){
@@ -30,6 +15,23 @@
 		}
 	};
 	$.fn.ratten = function(options){
+		// Default settings
+		var defaults = {
+			container: 'ul', // container
+			element: 'li', // animate element
+			prev: '.ratten-prev', // perv control selector
+			next: '.ratten-next', // next control selector
+			tween: 500, // animate time
+			interval: 3500, // run interval
+			step: 1, // run step
+			spacing: 70, // element's spacing
+			autoplay: true, // autoplay
+			pause: true, // on hover pause
+			//responsive: true,
+			orientation: 'horizontal',
+			//style: 'ratten',
+			delay: 3500 // init delay
+		};
 		var opts;
 		if(options&&typeof(options)==='object'){
 			opts = $.extend(defaults, options);

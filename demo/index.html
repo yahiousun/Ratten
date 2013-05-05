@@ -10,7 +10,9 @@
 <script src="../src/jquery.ratten.js"></script>
 <script>
 $(document).ready(function(e) {
-	$('#demo-horizontal').ratten();
+	$('#demo-horizontal').ratten({
+		spacing: 70
+	});
 	$('#demo-vertical').ratten({
 		orientation: 'vertical',
 		spacing: 50
